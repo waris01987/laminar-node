@@ -63,7 +63,31 @@ const supabase = createClient(
 //   credentials: true
 // }));
 
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:8080',                     // local dev frontend
+  'http://localhost:5173',                     // other dev port if used
+  'https://laminar-frontend.onrender.com',     // production frontend
+];
+
+app.use(cors({
+  origin: function(origin, callback){
+    // allow requests with no origin (like Postman)
+    if(!origin) return callback(null, true);
+
+    if(allowedOrigins.indexOf(origin) === -1){
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+}));
+
+// Preflight handler
+app.options('*', cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 
 app.use(express.json());
 
