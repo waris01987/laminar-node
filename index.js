@@ -67,6 +67,7 @@ const allowedOrigins = [
   'http://localhost:8080',                     // local dev frontend
   'http://localhost:5173',                     // other dev port if used
   'https://laminar-frontend.onrender.com',     // production frontend
+  'https://laminarinsights.vercel.app'
 ];
 
 app.use(cors({
